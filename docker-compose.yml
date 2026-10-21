@@ -1,0 +1,44 @@
+# Cloud / VM deployment:  docker compose up -d --build
+# Dashboard then lives at  http://<vm-public-ip>:8501
+services:
+  mosquitto:                      # MQTT broker (the "IoT hub")
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    restart: unless-stopped
+    # Port 1883 is intentionally NOT published: only the containers below talk to it.
+    # To let real/external devices connect, add:  ports: ["1883:1883"]  (and add authentication!)
+
+  backend:                        # subscribes, stores, detects anomalies, alerts
+    build: .
+    command: python backend.py
+    environment:
+      MQTT_HOST: mosquitto
+      DB_PATH: /data/vitals.db
+    volumes:
+      - vitals_data:/data
+    depends_on: [mosquitto]
+    restart: unless-stopped
+
+  simulator:                      # virtual wearables
+    build: .
+    command: python simulator.py
+    environment:
+      MQTT_HOST: mosquitto
+    depends_on: [mosquitto]
+    restart: unless-stopped
+
+  dashboard:                      # web UI
+    build: .
+    command: python -m streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0 --server.headless true --browser.gatherUsageStats false
+    environment:
+      DB_PATH: /data/vitals.db
+    volumes:
+      - vitals_data:/data
+    ports:
+      - "8501:8501"
+    depends_on: [backend]
+    restart: unless-stopped
+
+volumes:
+  vitals_data:

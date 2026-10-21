@@ -1,0 +1,17 @@
+# Database created at runtime
+data/
+*.db
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Secrets (never commit these)
+.env
+
+# Editor / OS
+.vscode/
+.DS_Store
+Thumbs.db
