@@ -72,11 +72,5 @@ Set these environment variables before starting (Gmail needs an *app password*):
 * The ML model often fires *earlier* than the rules, while vitals are still drifting but within normal limits (early warning).
 * An alert is raised once when a patient *enters* an abnormal state (not on every reading).
 
-## 6. Viva cheat-sheet
 
-* **Why MQTT?** Lightweight publish/subscribe protocol designed for constrained devices and unreliable networks; low overhead vs HTTP polling.
-* **Why cloud?** Central storage, remote access for doctors, scalability, and the backend/dashboard run 24x7 independent of any device.
-* **Why Isolation Forest?** Unsupervised: needs only normal data, no labelled disease data; isolates outliers quickly.
-* **What is simulated?** The sensors/wearables only. Protocol, broker, backend, storage, ML, alerts, dashboard and deployment are real.
-* **Limitations:** synthetic data, not clinically validated, no authentication/TLS on the broker (add both for production). This is a demo, not a medical device.
 * **Future work:** real wearables (ESP32 + MAX30102), TLS + auth, managed services (AWS IoT Core, DynamoDB, SNS), per-patient adaptive baselines.
