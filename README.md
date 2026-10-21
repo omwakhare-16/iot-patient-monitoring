@@ -27,7 +27,7 @@ tachycardia, bradycardia) are injected randomly; alerts appear in the table and 
 To see more alerts faster: `ANOMALY_PROBABILITY=0.08 python run_all.py`
 (Windows PowerShell: `$env:ANOMALY_PROBABILITY="0.08"; python run_all.py`).
 
-## 2. Deploy it to the cloud (this is your cloud-computing part)
+## 2. Deploy it to the cloud 
 
 Works on any cloud VM (AWS EC2, Azure VM, Google Compute Engine, Oracle free tier...).
 
